@@ -9,7 +9,7 @@ import { Task } from '../../models/task';
   styleUrl: './item-task.component.css'
 })
 export class ItemTaskComponent {
-  task = new Task({name: "Renan", isCompleted: true});
+  task = new Task({name: "Componentes Angular", isCompleted: false});
 
   changeStatusTask() {
     this.task.isCompleted = !this.task.isCompleted;

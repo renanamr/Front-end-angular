@@ -2,16 +2,11 @@
 Este projeto foi gerado com [Angular CLI](https://github.com/angular/angular-cli) versão 18.2.5.
 
 #### Temas abordados:
-
 +  **1.** Comunicação Template Componente: Interpolação, *Property binding* e *Event Binding*;
-
 +  **2.** Control Flow: Utilização do @IF, @For e @Let;
-
 +  **3.** Definição de Input e Output;
-
 +  **4.** Utilização do Bootstrap nos projetos Angular.
 
-  
 
 ## 0. Inicialização do projeto
 
@@ -81,8 +76,8 @@ import { Task } from  '../../models/task';
 	styleUrl:  './item-task.component.css'
 })
 export  class  ItemTaskComponent {
-	task = new Task({name:  "Renan", isCompleted:  true});
-
+	task = new Task({name:"Componentes Angular", isCompleted:false});
+	
 	changeStatusTask() {
 		this.task.isCompleted = !this.task.isCompleted;
 	}
@@ -116,6 +111,22 @@ Para finalizar,  **escreva o código abaixo sobrescrevendo o app.component.html*
 Agora, vamos aos novos conceitos 😁
 
 ### 1.1 Interpolação
+
+Usado para **inserir valores/expressões no template html**, com isso é possível conectar os dados das variáveis presentes no componente com às páginas html. Para isso, usa-se o símbolo `{{ }}`.
+
+Adicione no arquivo **item-task.component.html** o código abaixo para fazer uso da interpolação.
+```html
+<li>
+	<div>
+		<h5> {{ task.name }}</h5>
+	</div>
+	<button>{{ task.isCompleted ? 'Reabrir' : 'Finalizar' }}</button>
+</li>
+```
+
+Ao examinar o código vemos dois possíveis usos para a interpolação, sendo elas:
+ 1. **Demonstrar dados da variável:** No item `h5` é utilizado para demonstrar o valor do campo `name` presente na variável `task` que foi definida no *component*.
+ 2. **Dados a partir de expressões:**  No item `button` é utilizado para executar uma expressão, a qual escreve o texto do botão de acordo com o valor do campo `isCompleted` da variável `task`.
 
 ### 1.2 *Property binding*
 

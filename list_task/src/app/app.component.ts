@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ItemTaskComponent } from "./item-task/item-task.component";
+import { ItemTaskComponent } from './item-task/item-task.component';
 
 @Component({
   selector: 'app-root',
