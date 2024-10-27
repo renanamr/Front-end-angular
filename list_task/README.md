@@ -139,7 +139,7 @@ git checkout 3395145
 
 Usado para **definição de valores para propriedades de elementos html**, assim sendo possível a partir de variáveis do *component* modificar dinamicamente os *styles* dos componentes html, bem como links de imagens etc . Para isso, usa-se o símbolo `[ ]`.
 
-Adicione no arquivo **item-task.component.html** o código abaixo, **modificando o elemento h5 já existente **.
+Adicione no arquivo **item-task.component.html** o código abaixo, **modificando o elemento h5 já existente**.
 ```html
 <h5 [style.color]="task.isCompleted  ?  'gray'  :  'black'"> 
 	{{ task.name }}
@@ -154,7 +154,17 @@ Além disso, é possível passar  também somente uma variável que contenha ape
 **Atenção:** Para o código acima funcionar é necessário criar a variável `corTexto` dentro arquivo **item-task.component.ts**. E não usaremos esse modelo por enquanto em nosso projeto.
 
 ### 1.3 *Event Binding*
-  
+Usado para **permitir a execução de funções com base nas ações do usuário**, assim gerando uma comunicação por parte do html para o nosso *component* typescript. Para isso, usa-se o símbolo `( )`.
+
+Adicione no arquivo **item-task.component.html** o código abaixo, **modificando o elemento button já existente**.
+```html
+<button (click)="changeStatusTask()">
+	{{ task.isCompleted ? 'Reabrir' : 'Finalizar' }}
+</button>
+```
+
+Com a adição do *Event Binding* possibilitamos que ao **clicar no button** a função `changeStatusTask()` seja executa. Isso ocorre porque definimos a operação `(click)` no nosso botão, mas poderíamos usar outros tipos de ação definidas pelo html como o `(hover)` para executar a função caso o usuário passe o mouse por cima do elemento. 
+
 
 #### Verificando andamento...
 Concluímos a primeira parte do projeto, e para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
