@@ -1,6 +1,8 @@
 <li>
     <div>
-        <h5> {{ task.name }}</h5>
+        <h5 [style.color]="task.isCompleted  ?  'gray'  :  'black'">
+            {{ task.name }}
+        </h5>
     </div>
     <button>{{ task.isCompleted ? 'Reabrir' : 'Finalizar' }} </button>
 </li>
