@@ -1,27 +1,41 @@
 # ListTask
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.5.
+Este projeto foi gerado com [Angular CLI](https://github.com/angular/angular-cli) versão 18.2.5.
 
-## Development server
+#### Temas abordados:
++ **1.** Comunicação Template Componente: Interpolação, *Property binding* e *Event Binding*;
++ **2.** Control Flow: Utilização do @IF, @For e @Let;
++ **3.** Definição de Input e Output;
++ **4.** Utilização do Bootstrap nos projetos Angular.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 0. Inicialização do projeto
 
-## Code scaffolding
+Para iniciar crie um projeto para exercitar os conceitos. Para isso use o comando a seguir:
+```bash
+ng new list_task
+```
+**Observação:** Para esse projeto usaremos somente o componente AppComponent (que já é criado automaticamente) e o ItemTaskComponent. Pois o foco do projeto é exemplificar os conceitos, porém em uma execução real é ideal criar vários componentes para organizar melhor a estrutura.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+#### Criando o componente ItemTask:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Para criar os nossos componentes abra o terminal no diretório do projeto, e execute o comando abaixo para chegar até a página correta aonde devem ser criados os componentes.
+```bash
+cd src/app
+```
+Nela execute o comando:
+```bash
+ng g c item-task
+```
+Pronto, já estamos com todos os componentes e criados e pronto para uso.
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## 1. Comunicação Template Componente
 
-## Running end-to-end tests
+** Interpolação, *Property binding* e *Event Binding*;
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## 2. Control Flow
 
-## Further help
+## 3. Input e Output
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 4. Bootstrap
