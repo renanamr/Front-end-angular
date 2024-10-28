@@ -3,8 +3,8 @@ Este projeto foi gerado com [Angular CLI](https://github.com/angular/angular-cli
 
 #### Temas abordados:
 +  **1.** Comunicação Template Componente: Interpolação, *Property binding* e *Event Binding*;
-+  **2.** Control Flow: Utilização do @IF, @For e @Let;
-+  **3.** Definição de Input e Output;
++  **2.** Definição de Input e Output;
++  **3.** Control Flow: Utilização do @IF, @For e @Let;
 +  **4.** Utilização do Bootstrap nos projetos Angular.
 
 
@@ -169,13 +169,89 @@ Com a adição do *Event Binding* possibilitamos que ao **clicar no button** a f
 #### Verificando andamento...
 Concluímos a primeira parte do projeto, e para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
 ```bash
-git checkout 
+git checkout e7b96e2
 ```
 
-## 2. Control Flow
+## 2. Input e Output
 
- 
-## 3. Input e Output
+Muitas vezes quando estamos desenvolvendo projetos se faz necessário que nossos componentes troquem informações. Infelizmente, com o que aprendemos até agora isso não seria possível, pois só compartilhamos informações dentro do componente e seu template.
+
+Para resolver esse problema e possibilitar esse compartilhamento de dados aprenderemos a usar o `@input` e o `@output` e assim construir aplicações mais dinâmicas.
+
+Antes de ver o conceito na prática precisaremos modificar o **AppComponent**. Então sobrescreva o **app.component.ts** com o código abaixo, para que possamos usar a lista para atividade:
+```typescript
+import { Component } from '@angular/core';
+import { ItemTaskComponent } from "./item-task/item-task.component";
+import { Task } from '../models/task';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [ItemTaskComponent],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
+})
+export class AppComponent {
+  taskList : Array<Task> = [
+    new Task({ name: 'Estudar Angular', isCompleted: false }),
+    new Task({ name: 'Praticar TypeScript', isCompleted: true }),
+	new Task({ name: 'Ler sobre Web Development', isCompleted: false })
+  ];
+}
+```
+Agora, vamos aos conceitos 😁
   
+ 
+### 2.1 Input
+A propriedade `Input` é utilizada quando queremos **receber informações em um componente**, assim o componente que o importar será responsável por mandar esses dados.
+**Observação:** O componente que utiliza o input é chamado de componente filho, já o que envia os dados é chamado de componente pai.
+
+Para podermos usar o `Input` primeiramente precisaremos importa-lo no componente que desejarmos, no nosso caso será dentro do **item-task.component.ts**. Para isso, adicione a linha abaixo, sobrescrevendo a importação já existente do `@angular/core`:
+```typescript
+import { Component, Input } from '@angular/core';
+```
+
+Após a importação poderemos adicionar realmente o input, substituindo nossa antiga variável `task` pelo modelo com input, para que assim possamos usar o componente para qualquer task que quisermos. Para isso, adicione o *decorator* do **@Input** no **item-task.component.ts** assim como mostrado abaixo:
+```typescript
+//...
+export class ItemTaskComponent {
+  @Input({required: true}) task! : Task;
+//...
+}
+```
+Note que nele **declaramos um parâmetro opcional** chamado `required`. Esse parâmetro quando marcado como true, obriga que o componente pai passe a informação. Outro detalhe é o símbolo `!` utilizado após o nome da variável **task**, ele serve para informar que a variável **nunca será Null**.
+
+Agora, precisamos passar as informações em nosso template do AppComponent, para o componente ItemTaskComponent. Para isso sobreessreva seu arquivo **item-task.component.html** com o código abaixo: 
+```html
+<div>
+  <div>
+    <h3>Lista de Tarefas</h3>
+  </div>
+
+  <div>
+    <app-item-task  [task]="taskList[0]"></app-item-task>
+    <app-item-task  [task]="taskList[1]"></app-item-task>
+    <app-item-task  [task]="taskList[2]"></app-item-task>
+  </div>
+</div>
+```
+
+Note que para passarmos as informações para nosso componente estamos utilizando o conceito de *Property binding*. Isto ocorre porque o input transforma nossa variável *task* em um parâmetro do item `app-item-task`. 
+
+Agora conseguimos a partir da definição de um único componente, gerar diversos itens de tarefas diferentes seguindo um mesmo modelo de *template*. E essa é a grande vantagem no uso do da propriedade Input.
+
+### 2.2 Output
+
+
+## 3. Control Flow
+
+O *Control Flow* (Fluxo de controle) é uma ferramenta muito útil para construção de interfaces dinâmicas, que possibilitam gerar estruturas para verificação e demonstração de partes da tela *HTML*, bem como possibilita o reaproveitamento de código para construção de elementos *HTML*.
+
+
+### 3.1 Usando @For
+
+### 3.2 Usando @If
+
+### 3.3 Usando @Let
 
 ## 4. Bootstrap

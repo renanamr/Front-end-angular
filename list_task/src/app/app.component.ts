@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ItemTaskComponent } from './item-task/item-task.component';
+import { Task } from '../models/task';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +9,10 @@ import { ItemTaskComponent } from './item-task/item-task.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {}
+export class AppComponent {
+  taskList : Array<Task> = [
+    new Task({ name: 'Estudar Angular', isCompleted: false }),
+    new Task({ name: 'Praticar TypeScript', isCompleted: true }),
+    new Task({ name: 'Ler sobre Web Development', isCompleted: false })
+  ];
+}

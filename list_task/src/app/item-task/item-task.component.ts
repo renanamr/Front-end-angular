@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Task } from '../../models/task';
 
 @Component({
@@ -9,7 +9,7 @@ import { Task } from '../../models/task';
   styleUrl: './item-task.component.css'
 })
 export class ItemTaskComponent {
-  task = new Task({name: "Componentes Angular", isCompleted: false});
+  @Input({required: true}) task! : Task;
 
   changeStatusTask() {
     this.task.isCompleted = !this.task.isCompleted;

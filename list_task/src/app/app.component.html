@@ -3,5 +3,9 @@
         <h3>Lista de Tarefas</h3>
     </div>
 
-    <app-item-task></app-item-task>
+    <div>
+        <app-item-task [task]="taskList[0]"></app-item-task>
+        <app-item-task [task]="taskList[1]" ></app-item-task>
+        <app-item-task [task]="taskList[2]"></app-item-task>
+    </div>
 </div>
