@@ -308,13 +308,29 @@ Agora, precisamos passar as informações em nosso template do AppComponent, par
 ```
 Note que para passarmos as funções para nosso componente estamos utilizando o conceito de *Event binding*. 
 
+#### Verificando andamento...
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git checkout 697ed03
+```
 
 ## 3. Control Flow
 
 O *Control Flow* (Fluxo de controle) é uma ferramenta muito útil para construção de interfaces dinâmicas, que possibilitam gerar estruturas para verificação e demonstração de partes da tela *HTML*, bem como possibilita o reaproveitamento de código para construção de elementos *HTML*.
 
-
 ### 3.1 Usando @For
+
+O `@for` é um elemento usado para repetir a definição de algum item. Desta forma, é possível reaproveitar os itens e simplificar a definição no código HTML.
+
+Em nosso projeto, vamos adicionar o `@for` para construção da listagem dos `<app-item-task>`. Para isso, vamos alterar o arquivo **app.component.html**  substituindo as implementações dos itens pelo código abaixo:
+```typescript
+@for (task  of  taskList; track  $index) {
+  <app-item-task
+    [task]="task"
+    (eventChageStatusTask)="changeCompleteTask($event)"/>
+}
+```
+Na implementação é essencial o uso do `track`, pois é uma forma de usar um identificador para controle e atualização dinâmica da lista.
 
 ### 3.2 Usando @If
 

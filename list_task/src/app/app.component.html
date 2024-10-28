@@ -4,14 +4,8 @@
     </div>
 
     <div>
-        <app-item-task 
-            [task]="taskList[0]" 
-            (eventChageStatusTask)="changeCompleteTask($event)"/>
-        <app-item-task 
-            [task]="taskList[1]" 
-            (eventChageStatusTask)="changeCompleteTask($event)"/>
-        <app-item-task 
-            [task]="taskList[2]" 
-            (eventChageStatusTask)="changeCompleteTask($event)"/>
+        @for (task of taskList; track $index) {
+        <app-item-task [task]="task" (eventChageStatusTask)="changeCompleteTask($event)" />
+        }
     </div>
 </div>
