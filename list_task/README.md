@@ -334,6 +334,22 @@ Na implementação é essencial o uso do `track`, pois é uma forma de usar um i
 
 ### 3.2 Usando @If
 
+O `@If` é usado para criar uma opção para decidir o que será demonstrado no html. E em nosso projeto podemos utilizar para garantir a segurança da demonstração dos dados, informando se há ou não itens a serem demonstrados.
+
+Para a utilização vamos sobrescrever a definição anterior feita no `@for` pelo código abaixo:
+```typescript
+@if (taskList.length > 0) {
+<ul>
+  @for (task  of  taskList; track  $index) {
+    <app-item-task [task]="task" (eventChageStatusTask)="changeCompleteTask($event)"/>
+  }
+</ul>
+}@else{
+  <p>Nenhuma tarefa encontrada.</p>
+}
+```
+Note que o `@if` possibilita a partir de uma condição estabelecer se um elemento será ou não demonstrado. Também é possível utilizar o `@else` para demonstrar um elemento caso a condição estabelecida no `@if` seja Falsa.
+
 ### 3.3 Usando @Let
 
 ## 4. Bootstrap
