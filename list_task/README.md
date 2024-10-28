@@ -241,6 +241,72 @@ Note que para passarmos as informações para nosso componente estamos utilizand
 Agora conseguimos a partir da definição de um único componente, gerar diversos itens de tarefas diferentes seguindo um mesmo modelo de *template*. E essa é a grande vantagem no uso do da propriedade Input.
 
 ### 2.2 Output
+A propriedade `Output` é utilizada quando queremos **enviar informações de um componente para seu componente pai**, assim o componente que o importar poderá receber esses dados.
+
+O uso *Output está atrelado ao disparo de eventos, ao quais são definidos partir de um atributo **EventEmitter**, que precisa ser instanciado para utilização.
+
+Para podermos usar o `Output` primeiramente precisaremos importa-lo no componente que desejarmos, no nosso caso será dentro do **item-task.component.ts**. Para isso, adicione a linha abaixo, sobrescrevendo a importação já existente do `@angular/core`:
+
+```typescript
+import { Component, Input, EventEmitter, Output } from '@angular/core';
+```
+
+Após a importação poderemos adicionar realmente o output. Para isso, adicione o *decorator* do **@Output** e o **EventEmitter** no **item-task.component.ts** assim como mostrado abaixo:
+```typescript
+/...
+export  class  ItemTaskComponent {
+  /...
+  @Output() eventChageStatusTask = new EventEmitter<Task>();
+
+  changeStatusTask() {
+    this.task.isCompleted = !this.task.isCompleted;
+    this.eventChageStatusTask.emit(this.task);
+  }
+}
+```
+
+Algum detalhes da implementação são:
+1. **Definição da variável:** Para definição é necessário usar o decorator `@Output` bem como instanciar a variável com o tipo EventEmitter. (Note que o item entre <> define o tipo de parâmetro que será passado).
+2. **Chamada do evento:** Para chamar o evento se utiliza a variável definida se utilizando o método `emit`, passando entre `()` o valor do parâmetro que será utilizado pela função.
+
+Antes de realmente utilizar nosso Output, iremos adicionar a variável `tasksCompleted` e a função `changeCompleteTask`, no **app.component.ts**. Assim como definido abaixo:
+```typescript
+/...
+export  class  AppComponent {
+  /...
+  tasksCompleted : number = 1;
+
+  changeCompleteTask(task: Task) {
+    if(task.isCompleted){
+      this.tasksCompleted++;
+    }else{
+      this.tasksCompleted--;
+    }
+  }
+}
+```
+
+Agora, precisamos passar as informações em nosso template do AppComponent, para o componente ItemTaskComponent. Para isso sobreessreva seu arquivo **item-task.component.html** com o código abaixo: 
+```html
+<div>
+  <div>
+    <h3>{{"Lista de Tarefas - " + tasksCompleted + "/" + taskList.length}}</h3>
+  </div>
+
+  <div>
+    <app-item-task 
+      [task]="taskList[0]"
+      (eventChageStatusTask)="changeCompleteTask($event)"/>
+    <app-item-task 
+      [task]="taskList[1]"
+      (eventChageStatusTask)="changeCompleteTask($event)"/>
+    <app-item-task 
+      [task]="taskList[2]"
+      (eventChageStatusTask)="changeCompleteTask($event)"/>
+  </div>
+</div>
+```
+Note que para passarmos as funções para nosso componente estamos utilizando o conceito de *Event binding*. 
 
 
 ## 3. Control Flow

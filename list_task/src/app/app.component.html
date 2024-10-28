@@ -1,11 +1,17 @@
 <div>
     <div>
-        <h3>Lista de Tarefas</h3>
+        <h3>{{"Lista de Tarefas - " + tasksCompleted + "/" + taskList.length}}</h3>
     </div>
 
     <div>
-        <app-item-task [task]="taskList[0]"></app-item-task>
-        <app-item-task [task]="taskList[1]" ></app-item-task>
-        <app-item-task [task]="taskList[2]"></app-item-task>
+        <app-item-task 
+            [task]="taskList[0]" 
+            (eventChageStatusTask)="changeCompleteTask($event)"/>
+        <app-item-task 
+            [task]="taskList[1]" 
+            (eventChageStatusTask)="changeCompleteTask($event)"/>
+        <app-item-task 
+            [task]="taskList[2]" 
+            (eventChageStatusTask)="changeCompleteTask($event)"/>
     </div>
 </div>

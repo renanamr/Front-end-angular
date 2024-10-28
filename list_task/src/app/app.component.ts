@@ -15,4 +15,14 @@ export class AppComponent {
     new Task({ name: 'Praticar TypeScript', isCompleted: true }),
     new Task({ name: 'Ler sobre Web Development', isCompleted: false })
   ];
+
+  tasksCompleted: number = 1;
+
+  changeCompleteTask(task: Task) {
+    if(task.isCompleted){
+      this.tasksCompleted ++;
+    }else{
+      this.tasksCompleted --;
+    }
+  }
 }

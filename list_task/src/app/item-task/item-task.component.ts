@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Task } from '../../models/task';
 
 @Component({
@@ -11,7 +11,10 @@ import { Task } from '../../models/task';
 export class ItemTaskComponent {
   @Input({required: true}) task! : Task;
 
+  @Output() eventChageStatusTask = new EventEmitter<Task>();
+
   changeStatusTask() {
     this.task.isCompleted = !this.task.isCompleted;
+    this.eventChageStatusTask.emit(this.task);
   }
 }
