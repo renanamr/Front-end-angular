@@ -1,6 +1,7 @@
 <div>
     <div>
-        <h3>{{"Lista de Tarefas - " + tasksCompleted + "/" + taskList.length}}</h3>
+        @let tasksPercentage = tasksCompleted + "/" + taskList.length;
+        <h3>{{"Lista de Tarefas - " + tasksPercentage}}</h3>
     </div>
 
     <div>

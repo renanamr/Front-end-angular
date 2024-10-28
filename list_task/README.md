@@ -351,5 +351,12 @@ Para a utilização vamos sobrescrever a definição anterior feita no `@for` pe
 Note que o `@if` possibilita a partir de uma condição estabelecer se um elemento será ou não demonstrado. Também é possível utilizar o `@else` para demonstrar um elemento caso a condição estabelecida no `@if` seja Falsa.
 
 ### 3.3 Usando @Let
+O `@let` permite declarar variáveis dentro do html, facilitando a legibilidade do código em certas ocasiões.
+
+No nosso projeto é possível utiliza-lo para organizar os dados de percentual de tarefas concluídas, substituindo o elemento **h3** do arquivo **app.component.html**, assim como demonstrado abaixo:
+```typescript
+@let tasksPercentage = tasksCompleted + "/" + taskList.length;
+<h3>{{"Lista de Tarefas - " + tasksPercentage}}</h3>
+```
 
 ## 4. Bootstrap
