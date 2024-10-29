@@ -1,0 +1,23 @@
+/* Estilo base para o botão */
+.btn-toggle-status {
+    color: white;
+    border: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Gradiente para tarefa pendente */
+  .btn-pending {
+    background: linear-gradient(90deg, #28a745, #218838);
+  }
+  
+  /* Gradiente para tarefa completada */
+  .btn-completed {
+    background: linear-gradient(90deg, #6c757d, #5a6268);
+  }
+
+  .list-group-item {
+    border: none;
+    padding: 1rem 1.5rem;
+  }

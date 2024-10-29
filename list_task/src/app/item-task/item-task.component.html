@@ -1,10 +1,13 @@
-<li>
+<li class="list-group-item d-flex justify-content-between align-items-center">
     <div>
-        <h5 [style.color]="task.isCompleted  ?  'gray'  :  'black'">
+        <h5 [class.text-decoration-line-through]="task.isCompleted" [class.text-muted]="task.isCompleted"
+        [style.color]="task.isCompleted ? 'gray' : 'black'">
             {{ task.name }}
         </h5>
     </div>
-    <button (click)="changeStatusTask()">
+    <button class="btn btn-toggle-status px-4 py-2"
+    [class]="task.isCompleted ? 'btn btn-toggle-status btn-completed' : 'btn btn-toggle-status btn-pending'"
+    (click)="changeStatusTask()">
         {{ task.isCompleted ? 'Reabrir' : 'Finalizar' }} 
     </button>
 </li>

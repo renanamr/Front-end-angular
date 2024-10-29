@@ -359,4 +359,94 @@ No nosso projeto é possível utiliza-lo para organizar os dados de percentual d
 <h3>{{"Lista de Tarefas - " + tasksPercentage}}</h3>
 ```
 
+#### Verificando andamento...
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git checkout 2d54ecd
+```
+
 ## 4. Bootstrap
+O Bootstrap em projetos Angular facilita a criação de interfaces responsivas e modernas, acelerando o desenvolvimento com componentes estilizados e consistentes. Ele melhora a experiência do usuário com menos esforço de customização. 
+
+Para utilização do `Bootstrap` é necessário realizar a instalação no projeto. Para isso execute o código abaixo:
+```bash
+npm install bootstrap
+```
+
+No arquivo `angular.json`, adicione o CSS do Bootstrap:
+```json
+"styles": [
+  "node_modules/bootstrap/dist/css/bootstrap.min.css",
+  "src/styles.css"
+],
+```
+
+Atualize **app.component.html** com classes do Bootstrap assim como o código abaixo:
+```typescript
+<div class="container my-5">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      @let tasksPercentage = tasksCompleted  +  "/"  +  taskList.length;
+      <h3 class="mb-0">{{"Lista de Tarefas - "  +  tasksPercentage}}</h3>
+    </div>
+
+    <div class="card-body">
+      @if (taskList.length > 0) {
+      <ul class="list-group list-group-flush">
+        @for (task of taskList; track $index) {
+        <app-item-task [task]="task"  (eventChageStatusTask)="changeCompleteTask($event)"/>
+        }
+      </ul>
+      }@else{
+      <p class="text-muted text-center">Nenhuma tarefa encontrada.</p>
+      }
+    </div>
+  </div>
+</div>
+```
+
+Atualize **item-task.component.html** com classes do Bootstrap assim como o código abaixo:
+```typescript
+<li  class="list-group-item d-flex justify-content-between align-items-center">
+  <div>
+    <h5  [class.text-decoration-line-through]="task.isCompleted" 
+    [class.text-muted]="task.isCompleted"
+    [style.color]="task.isCompleted  ?  'gray'  :  'black'">
+    {{  task.name  }}
+    </h5>
+  </div>
+  
+  <button  class="btn btn-toggle-status px-4 py-2"
+  [class]="task.isCompleted  ?  'btn btn-toggle-status btn-completed'  :  'btn btn-toggle-status btn-pending'"
+  (click)="changeStatusTask()">
+    {{ task.isCompleted ? 'Reabrir' : 'Finalizar' }}
+  </button>
+</li>
+```
+
+Para finalizar iremos adicionar uma customização no arquivo css **item-task.component.css**. Assim como no exemplo abaixo:
+```css
+/* Estilo base para o botão */
+.btn-toggle-status {
+  color: white;
+  border: none;
+  border-radius: 50px;
+  transition: all  0.3s  ease;
+  box-shadow: 0  4px  10px  rgba(0, 0, 0, 0.15);
+}
+
+/* Gradiente para tarefa pendente */
+.btn-pending {
+  background: linear-gradient(90deg, #28a745, #218838);
+}
+
+/* Gradiente para tarefa completada */
+.btn-completed {
+  background: linear-gradient(90deg, #6c757d, #5a6268);
+}
+
+.list-group-item {
+  border: none;
+  padding: 1rem  1.5rem;
+}
+```

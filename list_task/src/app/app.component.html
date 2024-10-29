@@ -1,18 +1,20 @@
-<div>
-    <div>
-        @let tasksPercentage = tasksCompleted + "/" + taskList.length;
-        <h3>{{"Lista de Tarefas - " + tasksPercentage}}</h3>
-    </div>
-
-    <div>
-        @if (taskList.length > 0) {
-        <ul>
-            @for (task of taskList; track $index) {
-            <app-item-task [task]="task" (eventChageStatusTask)="changeCompleteTask($event)" />
+<div class="container my-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            @let tasksPercentage = tasksCompleted + "/" + taskList.length;
+            <h3 class="mb-0">{{"Lista de Tarefas - " + tasksPercentage}}</h3>
+        </div>
+    
+        <div class="card-body">
+            @if (taskList.length > 0) {
+            <ul class="list-group list-group-flush">
+                @for (task of taskList; track $index) {
+                <app-item-task [task]="task" (eventChageStatusTask)="changeCompleteTask($event)" />
+                }
+            </ul>
+            }@else{
+            <p class="text-muted text-center">Nenhuma tarefa encontrada.</p>
             }
-        </ul>
-        }@else{
-        <p>Nenhuma tarefa encontrada.</p>
-        }
+        </div>
     </div>
 </div>
