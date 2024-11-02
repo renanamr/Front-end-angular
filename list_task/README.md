@@ -424,6 +424,7 @@ Atualize **item-task.component.html** com classes do Bootstrap assim como o cód
 </li>
 ```
 
+O uso do Bootstrap não inviabiliza a utilização do seu próprio CSS, sendo recomendavel realizar também sua própria customização. 
 Para finalizar iremos adicionar uma customização no arquivo css **item-task.component.css**. Assim como no exemplo abaixo:
 ```css
 /* Estilo base para o botão */
@@ -449,4 +450,10 @@ Para finalizar iremos adicionar uma customização no arquivo css **item-task.co
   border: none;
   padding: 1rem  1.5rem;
 }
+```
+
+#### Verificação final
+Para verificar se ao final de tudo seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git checkout 95c2d79
 ```
