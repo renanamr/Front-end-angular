@@ -42,17 +42,17 @@ Dentro da pasta criada, gere um **novo arquivo** chamado **task.ts**. Dentro del
 ```typescript
 export  class  Task {
 	name:  string;
-	isComplete:  boolean;
+	isCompleted:  boolean;
 
 	constructor(task  :  ITask) {
 		this.name  =  task.name;
-		this.isComplete  =  task.isComplete;
+		this.isCompleted  =  task.isCompleted;
 	}
 }
 
 interface  ITask{
 	name:  string;
-	isComplete:  boolean;
+	isCompleted:  boolean;
 }
 ```
 
