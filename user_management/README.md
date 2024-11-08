@@ -114,16 +114,71 @@ Além disso, implemente o código abaixo sobrescrevendo o código da classe **he
 #### Verificando andamento...
 Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
 ```bash
-git checkout 
+git checkout a2ce276
 ```
 
 Agora, vamos aos novos conceitos 😁
 
 ## 1. Routes
 
+Rotas são elementos importantes em aplicações Angular por possibilitar a criação de estruturas dinâmicas que podem ser renderizadas em seu site. 
+Para implementar o modelo de rotas no projeto *standalone* é necessário:
+1. Definir as rotas para os componentes;
+2. Usar o RouterOutlet;
+3. Usar RouterLink.
+
 ### 1.1 Definição das rotas
 
+Primeiramente iremos definir as rotas do nosso site, para isso sobrescreva o arquivo **app.routes.ts** com o código abaixo:
+```typescript
+import { Routes } from  '@angular/router';
+import { UserListComponent } from  './pages/user-list/user-list.component';
+import { UserFormComponent } from  './pages/user-form/user-form.component';
+
+export  const  routes:  Routes  = [
+  {
+    path:  'users',
+    title:  "Usuários",
+    component:  UserListComponent
+  },
+  {
+    path:  'add-user',
+    title:  "Criar Usuário",
+    component:  UserFormComponent
+  },
+  {
+    path:  'edit-user/:id',
+    title:  "Editar Usuário",
+    component:  UserFormComponent
+  },
+  { path:  '', redirectTo:  '/users', pathMatch:  'full' }
+];
+```
+No código definimos as rotas possíveis do site dentro da lista **routes**. Essa variável possibilita identificar todas as rotas que o sistema terá. Além disso, você pode definir **rotas de redirecionamento** como na última linha, que redirecionam o usuário do caminho inicial para o `/users`.
+
 ### 1.2 RouterOutlet
+O `RouterOutlet` no Angular atua como um ponto de âncora onde componentes são exibidos de acordo com a rota ativa. Ele permite a navegação entre páginas sem recarregar a aplicação. Desta forma, ele permite também a criação de uma navegação interna, sobrescrevendo os componentes internos de uma tela.
+
+Para usar o `RouterOutlet` precisamos inicialmente importa-lo em nosso componente. Para isso sobrescreva o arquivo **app.component.ts** como demonstrado abaixo:
+```typescript
+import { Component } from  '@angular/core';
+import { RouterOutlet } from  '@angular/router';
+import { HeaderComponent } from  './components/header/header.component';
+
+@Component({
+  selector:  'app-root',
+  standalone:  true,
+  imports: [RouterOutlet, HeaderComponent],
+  templateUrl:  './app.component.html',
+  styleUrl:  './app.component.css'
+})
+export  class  AppComponent {}
+```
+Uma vez importado, basta utilizar o elemento `<router-outlet>` em nosso html. Para isso sobrescreva o arquivo **app.component.html** como demonstrado abaixo:
+```html
+<app-header/>
+<router-outlet/>
+```
 
 ### 1.3 RouterLink
 
