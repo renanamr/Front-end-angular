@@ -180,8 +180,56 @@ Uma vez importado, basta utilizar o elemento `<router-outlet>` em nosso html. Pa
 <router-outlet/>
 ```
 
-### 1.3 RouterLink
+#### Verificando andamento...
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git checkout e32b63b
+```
 
+### 1.3 RouterLink
+O `RouterLink` é uma diretiva que nos possibilita realizar a navegação para diversas rotas de nosso site ao interagir com elementos html.
+
+Para usar o `RouterLink` precisamos inicialmente importa-lo em nosso componente. Para isso sobrescreva o arquivo **user-list.component.ts** como demonstrado abaixo:
+```typescript
+import { Component } from  '@angular/core';
+import { RouterLink } from  '@angular/router';
+import { User } from  '../../models/user';
+
+@Component({
+  selector:  'app-user-list',
+  standalone:  true,
+  imports: [RouterLink],
+  templateUrl:  './user-list.component.html',
+  styleUrl:  './user-list.component.css'
+})
+export  class  UserListComponent{
+  users:  User[] = [
+    new  User({id:  1, name:  "Renan", cpf:  "000", email:  "renan.morais@ifrn.edu.br"})
+  ];
+}
+```
+Além da importação do `RouterLink` criamos uma lista de usuários chamada **users** que servirá para nos ajudar a demonstrar uma das opções de navegação.
+
+Para usar a diretiva nos elementos html basta colocar o `routerLink` em nosso elemento html e informar o caminho a ser acessado. Exemplo: `routerLink="/add-user"`.
+
+Para demonstrar a utilização vamos sobrepor o código do arquivo **user-list.component.html** como demonstrado abaixo:
+```html
+<div  class="container mt-4">
+  <div  class="d-flex justify-content-between align-items-center">
+    <h2>Lista de Usuários</h2>
+    <a  routerLink="/add-user"  class="btn btn-primary mb-3">Adicionar Usuário</a>
+  </div>
+
+  <ul  class="list-group">
+    @for (user  of  users; track  $index) {
+    <li  class="list-group-item d-flex justify-content-between align-items-center">
+      <span>{{  user.name  }} - {{  user.email  }}</span>
+      <a  [routerLink]="['/edit-user', user.id]"  class="btn btn-outline-secondary btn-sm">Editar</a>
+    </li>
+    }
+  </ul>
+</div>
+```
 
 ## 2. Form
 
