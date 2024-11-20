@@ -3,7 +3,7 @@ Este projeto foi gerado com [Angular CLI](https://github.com/angular/angular-cli
 
 #### Temas abordados:
 +  **1.** **Rotas:** Definição e configuração de rotas, RouterOutlet e RouterLink
-+  **2.** **Form:** Utilização do @IF, @For e @Let;
++  **2.** **Form:** Reactive Forms e Validações;
 +  **3.** Criação e uso de **Services**;
 
 ## 0. Inicialização do projeto
@@ -339,5 +339,101 @@ git checkout e7ff710
 ```
 
 ### 2.2 Validating forms
+Validação de campos é essencial para a garantir a qualidade dos dados salvos nos sistemas, evitando alguns erros de informações fora de padrão ou dados vazio para campos de identificação. 
+O Angular possibilita usarmos validações de formulários de uma forma muito simples, ao usarmos `Reactive Forms`, basta adicionarmos os `Validators` nos `FormControls` como mostrado abaixo:
+```typescript
+name:  new  FormControl('', Validators.required),
+email:  new  FormControl('', [Validators.required, Validators.email]),
+```
+Veja que pode ser usado como uma verificação simples ou a partir de uma lista da `Validators`.
 
-## 3. Service
+Em nosso projeto iremos adicionar parte do nosso  `constructor` e função `onSubmit()` do **user-form.component.ts** como demonstrado abaixo:
+```typescript
+constructor(private router: Router,) {
+  this.userForm = new FormGroup({
+    name: new FormControl('', Validators.required),
+    cpf: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
+  });
+}
+
+onSubmit():  void {
+  if (this.userForm.valid) {
+    const user: User = new  User({
+      id: this.userId!,
+      name: this.userForm.value.name,
+      email: this.userForm.value.email,
+      cpf: this.userForm.value.cpf,
+    });
+    this.router.navigate(['/users']);
+  }
+}
+```
+
+Com isso adicionamos as validações ao nosso formulário, obrigando que todos sejam preenchidos e que o input de e-mail seja definido como o padrão de e-mail exige. Mas há um detalhe interessante, além de definir as validações é necessário fazer a chamada da função `valid` para saber se realmente todos os campos foram do `FormGroup` foram validados, por isso adicionamos a chamada **this.userForm.valid** em uma estrutura condicional.
+
+Outro detalhe interessante do código é: `this.router.navigate(['/users'])`. Essa é uma forma de usarmos o sistema de navegação do nosso sistema por meio de funções no Typescript.
+
+
+Para melhorarmos ainda mais a segurança e usabilidade podemos usar os elementos de validação do Forms diretamente em nosso botão, desabilitando o `onSubmit` até que o formulário esteja com todos os dados válidos. 
+
+Para usar essa funcionalidade iremos implementar o código abaixo no nosso  **user-form.component.html**, substituindo apenas o button anterior.
+```html
+<button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
+{{ editMode ? 'Atualizar' : 'Adicionar' }}
+</button>
+```
+
+#### 2.2.1 Validating forms - validações programáveis
+O Angular também permite criar `Validators` próprios. Para isso basta que a função seja definida com o tipo de retorno `ValidationErrors  |  null` e receber como parâmetro uma variável do tipo `AbstractControl`.
+
+Para nosso projeto vamos criar um validador próprio para no CPF, para validar que ele siga as regras estabelecidas pelo CPF brasileiro. Para isso, cria a pasta **validators** dentro da pasta **src/app**, e nessa pasta crie o arquivo **cpf_validator.ts**.
+
+No arquivo **cpf_validator.ts** adicione o código abaixo:
+```typescript
+import { AbstractControl, ValidationErrors } from  '@angular/forms';
+
+export  function  cpfValidator(control:  AbstractControl):  ValidationErrors  |  null {
+  const  cpf  =  control.value?.replace(/\D/g, ''); // Remove caracteres não numéricos
+
+  if (!cpf  ||  cpf.length  !==  11  || /^(\d)\1{10}$/.test(cpf)) {
+    return { cpfInvalid:  'CPF inválido' };
+  }
+
+  // Validação dos dígitos verificadores
+  let  sum  =  0;
+  for (let  i  =  0; i  <  9; i++) {
+    sum  +=  parseInt(cpf.charAt(i)) * (10  -  i);
+  }
+
+  let  firstDigit  = (sum  *  10) %  11;
+  if (firstDigit  ===  10  ||  firstDigit  ===  11) firstDigit  =  0;
+  if (firstDigit  !==  parseInt(cpf.charAt(9))) {
+    return { cpfInvalid:  'CPF inválido' };
+  }
+
+  sum  =  0;
+  for (let  i  =  0; i  <  10; i++) {
+    sum  +=  parseInt(cpf.charAt(i)) * (11  -  i);
+  }
+  
+  let  secondDigit  = (sum  *  10) %  11;
+  if (secondDigit  ===  10  ||  secondDigit  ===  11) secondDigit  =  0;
+  if (secondDigit  !==  parseInt(cpf.charAt(10))) {
+    return { cpfInvalid:  'CPF inválido' };
+  }
+
+  return  null; // CPF válido
+}
+```
+
+Para usarmos nosso validator basta importar o arquivo no componente e passar a função como uma opção na lista de `Validators` do `FormControl`. Faremos isso em nosso projeto no arquivo **user-form.component.ts**, como mostrado abaixo:
+```typescript
+cpf: new FormControl('', [Validators.required, cpfValidator]),
+```
+
+#### Verificando andamento...
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git checkout be8ffd4
+```
