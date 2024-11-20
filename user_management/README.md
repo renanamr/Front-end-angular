@@ -231,6 +231,107 @@ Para demonstrar a utilização vamos sobrepor o código do arquivo **user-list.c
 </div>
 ```
 
+#### Verificando andamento...
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git checkout 7ad0599
+```
+
 ## 2. Form
+O uso de formulários em projetos web é base para comunicação entre o cliente e o servidor, possibilitando operações como cadastros e buscas. Porém, para um bom uso do elemento sempre é necessário validar dados de usuários de forma eficiente, garantindo interatividade e segurança nas aplicações.
+Em projetos Angular o processo de implementação de *Forms* é simplificado com o uso do `Reactive Forms` e `Validating forms`, elementos que iremos aprender a seguir.
+
+### 2.1 Reactive Forms
+Reactive Forms é um elemento para criar e gerenciar formulários de maneira reativa e programática. Ele é utilizado juntamente com o `FormGroup` e `FormControl`, permitindo validação dinâmica, monitoramento de mudanças em tempo real e maior controle sobre o estado e os valores do formulário no código.
+
+Para sua utilização é necessário importar os elementos como demonstrado abaixo:
+```typescript
+import { ReactiveFormsModule, FormGroup, FormControl } from  '@angular/forms';
+```
+
+O `FormGroup` e `FormControl` são elementos que trabalham juntos para o controle dos formulários, sendo ambos implementados no componente typescript. Os elementos servem para:
++ **FormGroup**: É o agrupamento de `FormControl`, que juntos representam o formulário;
++ **FormControl**: Representa um único campo de entrada no formulário (um *input*).
+
+
+Para demonstrar a definição dos elementos vamos sobrepor o código do arquivo **user-form.component.ts** como demonstrado abaixo:
+```typescript
+import { Component} from  '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormControl } from  '@angular/forms';
+import { Router } from  '@angular/router';
+import { User } from  '../../models/user';
+
+@Component({
+  selector:  'app-user-form',
+  standalone:  true,
+  imports: [ReactiveFormsModule],
+  templateUrl:  './user-form.component.html',
+  styleUrls: ['./user-form.component.css']
+})
+export  class  UserFormComponent{
+  userForm: FormGroup;
+  editMode = false;
+  userId: number | null = null;
+
+  constructor(private  router:  Router,) {
+    this.userForm = new FormGroup({
+      name: new FormControl(''),
+      cpf: new FormControl(''),
+      email: new FormControl(''),
+    });
+  }
+
+  onSubmit():  void {
+    const  user:  User  =  new  User({
+      id:  this.userId!,
+      name:  this.userForm.value.name,
+      email:  this.userForm.value.email,
+      cpf:  this.userForm.value.cpf,
+    });
+  }
+}
+```
+Note que inicializamos os valores dos `FormControl` dentro do nosso construtor, sendo eles inicializamos com um texto vazio. Mas você poderia escrever algum texto na inicialização do elemento. (Faremos isso mais na frente no projeto).
+
+Nossos elementos foram criados, mas não estão ainda vinculados ao html, para isso é necessário criar um element `<form>` e passar os parâmetros como baixo:
+```html
+<form  [formGroup]="userForm"  (ngSubmit)="onSubmit()">
+```
+O `[formGroup]` fará a vinculação ao nosso agrupamento criado no componente, já o `(ngSubmit)` permite vincular uma função de submissão do formulário.
+
+Para vincular aos inputs é necessário utilizar o modelo abaixo:
+```html
+<input formControlName="cpf"/>
+```
+O parâmetro `formControlName` irá vincular o nosso input html ao `FormControl` criado no componente, para isso é necessário que os nomes sejam iguais.
+
+Para o nosso projeto vamos sobrepor o código do arquivo **user-form.component.html** como demonstrado abaixo:
+```html
+<div  class="container mt-4">
+  <h2>{{  editMode  ?  'Editar Usuário'  :  'Adicionar Usuário'  }}</h2>
+  <form  [formGroup]="userForm"  (ngSubmit)="onSubmit()">
+    <div  class="mb-3">
+      <label  for="name"  class="form-label">Nome</label>
+      <input  type="text"  id="name"  class="form-control"  formControlName="name"  />
+    </div>
+
+    <div  class="mb-3">
+      <label  for="email"  class="form-label">Email</label>
+      <input  type="email"  id="email"  class="form-control"  formControlName="email"  />
+    </div>
+
+    <div  class="mb-3">
+      <label  for="cpf"  class="form-label">CPF</label>
+      <input  type="text"  id="cpf"  class="form-control"  formControlName="cpf"  />
+    </div>
+
+    <button  type="submit"  class="btn btn-primary">
+      {{  editMode  ?  'Atualizar'  :  'Adicionar'  }}
+    </button>
+  </form>
+</div>
+```
+
+### 2.2 Validating forms
 
 ## 3. Service
