@@ -2,6 +2,7 @@ import { Component} from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from '../../models/user';
+import { cpfValidator } from '../../validators/cpf_validator';
 
 @Component({
   selector: 'app-user-form',
@@ -20,7 +21,7 @@ export class UserFormComponent{
   ) {
     this.userForm = new FormGroup({
       name: new FormControl('', Validators.required),
-      cpf: new FormControl('', [Validators.required,]),
+      cpf: new FormControl('', [Validators.required, cpfValidator]),
       email: new FormControl('', [Validators.required, Validators.email]),
     });
   }
