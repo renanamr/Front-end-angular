@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from '../../models/user';
 
@@ -19,19 +19,23 @@ export class UserFormComponent{
     private router: Router,
   ) {
     this.userForm = new FormGroup({
-      name: new FormControl(''),
-      cpf: new FormControl(''),
-      email: new FormControl(''),
+      name: new FormControl('', Validators.required),
+      cpf: new FormControl('', [Validators.required,]),
+      email: new FormControl('', [Validators.required, Validators.email]),
     });
   }
 
   onSubmit(): void {
-    const user: User = new User({
-      id: this.userId!,
-      name: this.userForm.value.name,
-      email: this.userForm.value.email,
-      cpf: this.userForm.value.cpf,
-    });
+    if (this.userForm.valid) {
+      const user: User = new User({
+        id: this.userId!,
+        name: this.userForm.value.name,
+        email: this.userForm.value.email,
+        cpf: this.userForm.value.cpf,
+      });
+
+      this.router.navigate(['/users']);
+    }
   }
 
 }

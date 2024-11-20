@@ -16,7 +16,7 @@
         <input type="text" id="cpf" class="form-control" formControlName="cpf" />
       </div>
 
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
         {{ editMode ? 'Atualizar' : 'Adicionar' }}
       </button>
     </form>

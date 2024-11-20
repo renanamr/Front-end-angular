@@ -332,6 +332,12 @@ Para o nosso projeto vamos sobrepor o código do arquivo **user-form.component.h
 </div>
 ```
 
+#### Verificando andamento...
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git checkout e7ff710
+```
+
 ### 2.2 Validating forms
 
 ## 3. Service
