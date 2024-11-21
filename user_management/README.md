@@ -437,3 +437,102 @@ Para verificar se seu projeto está igual a este, você pode usar o comando **gi
 ```bash
 git checkout be8ffd4
 ```
+
+## 3. Service
+
+Os **Services** são essenciais nos projetos Angular, pois possibilitam centralizar e reutilizar lógicas de negócios e manipulação de dados, promovendo organização e facilidade de manutenção. Eles também possibilitam o compartilhamento de informações entre componentes, seguindo o princípio da injeção de dependência.
+
+Para a introdução do nosso conceito não iremos realizar consultas a APIs, mas nos projetos futuros usaremos tal artificio via Service.
+
+### 3.1 Criando o Service
+
+A criação do Service é muito simples, podemos gera-lo por meio de um comando no terminal do projeto. Mas antes de criarmos em nosso projeto o Service, iremos criar uma pasta chamada **services** dentro do caminho **src/app**.
+Agora, dentro da pasta service use o comando abaixo para gerar nosso service:
+```bash
+ng g s user_service
+```
+
+Dentro do arquivo **user_service.ts** sobrescreva-o com o código abaixo:
+```typescript
+import { Injectable } from  "@angular/core";
+import { User } from  "../models/user";
+
+@Injectable({
+  providedIn:  'root'
+})
+export  class  UserService {
+  private  users:  User[] = [];
+  private  currentId  =  1;
+
+  getUsers():  User[] {
+    return  this.users;
+  }
+  
+  addUser(user:  User):  void {
+    user.id  =  this.currentId++;
+    this.users.push(user);
+  }
+
+  getUserById(id:  number):  User  |  undefined {
+    return  this.users.find(user  =>  user.id  ===  id);
+  }
+  
+  updateUser(updatedUser:  User):  void {
+    const  index  =  this.users.findIndex(user  =>  user.id  ===  updatedUser.id);
+    if (index  !==  -1) {
+      this.users[index] =  updatedUser;
+    }
+  }
+}
+```
+
+A definição dos nossos services é feita via diretiva `@Injectable`. Dentro da diretiva é possível descrever um parâmetro chamado `providedIn`, seu objetivo é delimitar o escopo de compartilhamento/utilização do serviço. Em nosso caso o serviço está descrito como `root`, isso indicia que ele pode ser utilizado em qualquer parte do projeto, mas poderia restringi-lo a um pacote específico.
+
+Para usarmos os serviços dentro dos componentes é muito simples, basta **instancia-los via injeção de dependência**. Para realizar o processo basta criar uma váriável dentro do construtor com a tipagem do serviço. 
+Para o nosso projeto vamos adicionar o serviço no arquivo **user-list.component.ts**, sendo assim, iremos sobrescrever a variável users criada anteriormente e adicionar o construtor como abaixo:
+```typescript
+users: User[];
+
+constructor(private userService: UserService) {
+  this.users = this.userService.getUsers();
+}
+```
+
+Agora a lista de usuários do componente está vinculado ao nosso serviço, porém ainda precisamos vincular o nosso cadastro de usuários a listagem. Para isso iremos fazer o mesmo processo no arquivo **user-form.component.ts**.
+
+No arquivo **user-form.component.ts**, vamos sobrescrever nosso `constructor` declarado adicionando o nosso serviço, e também iremos sobrescrever a função `onSubmit()` para registrar os usuários no **UserService**:
+```typescript
+constructor(
+  private router: Router,
+  private route: ActivatedRoute,
+  private userService: UserService,
+) {
+  this.userForm = new FormGroup({
+    name: new FormControl('', Validators.required),
+    cpf: new FormControl('', [Validators.required, cpfValidator]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+  });
+}
+
+onSubmit():  void {
+  if (this.userForm.valid) {
+    const user: User = new User({
+      id: this.userId!,
+      name: this.userForm.value.name,
+      email: this.userForm.value.email,
+      cpf: this.userForm.value.cpf,
+    });
+
+    if (this.editMode) {
+      this.userService.updateUser(user);
+    } else {
+      this.userService.addUser(user);
+    }
+
+    this.router.navigate(['/users']);
+  }
+}
+```
+Note que agora é possível visualizar todos os usuários cadastrados na tela de listagem, pois eles agora estão sendo compartilhados via **UserService**. Em nosso construtor também adicionamos o parâmetro `ActivatedRoute`, mas isso eu explicarei como o usaremos mais para frente do projeto.
+
+### 3.2 Adicionando funções de ciclo de vida do componente

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { User } from '../../models/user';
+import { UserService } from '../../services/user_service';
 
 @Component({
   selector: 'app-user-list',
@@ -10,7 +11,9 @@ import { User } from '../../models/user';
   styleUrl: './user-list.component.css'
 })
 export class UserListComponent{
-  users: User[] = [
-    new User({id: 1, name: "Renan", cpf: "000", email: "renan.morais@ifrn.edu.br"})
-  ];
+  users: User[];
+
+  constructor(private userService: UserService) {
+    this.users = this.userService.getUsers();
+  }
 }

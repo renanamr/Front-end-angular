@@ -1,8 +1,9 @@
 import { Component} from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../models/user';
 import { cpfValidator } from '../../validators/cpf_validator';
+import { UserService } from '../../services/user_service';
 
 @Component({
   selector: 'app-user-form',
@@ -18,6 +19,8 @@ export class UserFormComponent{
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
+    private userService: UserService,
   ) {
     this.userForm = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -34,6 +37,12 @@ export class UserFormComponent{
         email: this.userForm.value.email,
         cpf: this.userForm.value.cpf,
       });
+
+      if (this.editMode) {
+        this.userService.updateUser(user);
+      } else {
+        this.userService.addUser(user);
+      }
 
       this.router.navigate(['/users']);
     }
