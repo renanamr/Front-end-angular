@@ -535,4 +535,33 @@ onSubmit():  void {
 ```
 Note que agora é possível visualizar todos os usuários cadastrados na tela de listagem, pois eles agora estão sendo compartilhados via **UserService**. Em nosso construtor também adicionamos o parâmetro `ActivatedRoute`, mas isso eu explicarei como o usaremos mais para frente do projeto.
 
+#### Verificando andamento...
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git checkout 2718e5e
+```
+
 ### 3.2 Adicionando funções de ciclo de vida do componente
+Agora que conseguimos compartilhar nossas informações de usuários via `UserService` podemos concluir nosso projeto possibilitando também a edição dos usuários. Porém, para isso precisamos conseguir recuperar o id informado na url para que possamos recuperar o usuário, e será nesse momento que entraremos com o `ActivatedRoute`, bem como iremos aprender a usar as funções de ciclo de vida do componente, para que ao inicializar a tela possamos recuperar os dados.
+
+Para iniciar teremos que implementar uma função chamada **ngOnInit** ela é uma função especial do ciclo de vida de um componente, então adicione no nosso arquivo o  **user-form.component.ts** a função abaixo:
+```typescript
+ngOnInit():  void {
+  this.route.paramMap.subscribe(params  => {
+    this.userId  =  +params.get('id')!;
+    if (this.userId) {
+      this.editMode  =  true;
+      const  user  =  this.userService.getUserById(this.userId);
+      if (user) {
+        this.userForm.patchValue(user);
+      }
+    }
+  });
+}
+```
+Essa função é capaz de a partir da variável **route**, que é do tipo `ActivatedRoute`, pegar a url atual do site e consultar o **id** informado nela. Desta forma, podemos a partir do **id** realizar uma consulta ao **UserService**, para buscar os dados do usuário e inseri-los dentro do **userForm** via função `patchValue`.
+
+Ao executar o projeto, você irá perceber que mesmo adicionando a função `ngOnInit` os dados do usuário na edição não estão sendo apresentados na tela. Isso ocorre porque precisamos implementar a interface `OnInit` em nosso componente, e para isso basta sobrescrever a declaração da classe ** UserFormComponent** como abaixo: 
+```typescript
+export  class  UserFormComponent implements OnInit {
+```
