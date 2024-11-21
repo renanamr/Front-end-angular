@@ -565,3 +565,13 @@ Ao executar o projeto, você irá perceber que mesmo adicionando a função `ngO
 ```typescript
 export  class  UserFormComponent implements OnInit {
 ```
+
+Agora, se você refizer seus testes irá vê que é possível visualizar os dados de edição dos usuários no forms, bem como realmente editar suas infromações e atualizar o cadastro.
+
+Com isso, finalizamos o nosso projeto **User Managment**. Espero que tenha conseguido obter o conhecimento dos temas trabalhados. 😁
+
+#### Verificação final
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git checkout e07b5ff
+```
