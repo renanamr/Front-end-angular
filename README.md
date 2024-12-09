@@ -21,5 +21,5 @@ Os exemplos estão divididos em projetos que abordam determinados assuntos neces
 
 **Temas abordados:**
 + **Rotas:** Definição e configuração de rotas, RouterOutlet e RouterLink;
-+ **Form:** Utilização do @IF, @For e @Let;
-+ Criação e uso de **Services**;
++ **Form:** Reactive Forms e Validações;
++ Criação e uso de **Services**.
