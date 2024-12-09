@@ -15,3 +15,11 @@ Os exemplos estão divididos em projetos que abordam determinados assuntos neces
 + **Control Flow:** Utilização do @IF, @For e @Let;
 + Definição de **Input e Output**;
 + Utilização do **Bootstrap** nos projetos Angular.
+
+### 1.2 *User Management*
+**Descrição:** Projeto que simula um gerenciador de usuários
+
+**Temas abordados:**
++ **Rotas:** Definição e configuração de rotas, RouterOutlet e RouterLink;
++ **Form:** Reactive Forms e Validações;
++ Criação e uso de **Services**.

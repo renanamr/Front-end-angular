@@ -1,0 +1,15 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Lista de Usuários</h2>
+        <a routerLink="/add-user" class="btn btn-primary mb-3">Adicionar Usuário</a>
+    </div>
+
+    <ul class="list-group">
+        @for (user of users; track $index) {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ user.name }} - {{ user.email }}</span>
+                <a [routerLink]="['/edit-user', user.id]" class="btn btn-outline-secondary btn-sm">Editar</a>
+              </li>
+        }
+    </ul>
+</div>
