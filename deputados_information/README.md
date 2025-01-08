@@ -205,3 +205,32 @@ Agora, sobrescreva o arquivo **app.component.html** com o código abaixo:
 <app-header></app-header>
 <router-outlet/>
 ```
+
+### 0.5 Configurando as rotas
+
+Para finalizar nossas configurações iremos adicionar o modelo de rotas no nosso sistema. Para isso, basta sobrescrever o arquivo **app.routes.ts**, localizado na pasta `src/app`, com o código abaixo:
+```typescript
+import { Routes } from  '@angular/router';
+import { DeputadoDetailsComponent } from  './pages/deputado-details/deputado-details.component';
+import { DeputadosListComponent } from  './pages/deputados-list/deputados-list.component';
+
+export  const  routes:  Routes  = [
+  {
+    path:  'deputados',
+    title:  "Deputados",
+    component:  DeputadosListComponent
+  },
+  {
+    path:  'detalhes/:id',
+    title:  "Ficha do deputado",
+    component:  DeputadoDetailsComponent
+  },
+  { path:  '', redirectTo:  '/deputados', pathMatch:  'full' }
+];
+```
+
+#### Verificação parcial
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git  checkout  493ca60
+```
