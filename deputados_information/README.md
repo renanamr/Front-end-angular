@@ -206,6 +206,12 @@ Agora, sobrescreva o arquivo **app.component.html** com o código abaixo:
 <router-outlet/>
 ```
 
+#### Verificação parcial
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git  checkout  493ca60
+```
+
 ### 0.5 Configurando as rotas
 
 Para finalizar nossas configurações iremos adicionar o modelo de rotas no nosso sistema. Para isso, basta sobrescrever o arquivo **app.routes.ts**, localizado na pasta `src/app`, com o código abaixo:
@@ -229,8 +235,126 @@ export  const  routes:  Routes  = [
 ];
 ```
 
-#### Verificação parcial
-Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+
+### 0.6 Componente auxiliar (Deputado card)
+Para este projeto também iremos construir um componente auxiliar para representar os cards dos deputados que serão listados. Esse componente é exclusivo para a page **deputado-list**, por isso não iremos cria-lo dentro da página *components* geral.
+
+Quando se tem esse tipo de caso o ideal é criar uma pasta **components** dentro da pasta referente a página ao qual ele vai interagir. Em nosso caso iremos criar a pasta dentro do caminho **src/app/pages/deputado-list**. Logo, nosso componente **deputado-card**, deverá ser criado dentro do caminho **src/app/pages/deputado-list/components**, se utilizando do código abaixo:
 ```bash
-git  checkout  493ca60
+ng g c deputado-card
 ```
+
+Uma vez criado o componente precisamos sobrescrever o arquivo **deputado-card.component.ts** com o código:
+```typescript
+import { Component, EventEmitter, Input, Output} from  '@angular/core';
+import { Deputado } from  '../../../../models/deputado';
+import { RouterLink } from  '@angular/router'; 
+
+@Component({
+  selector:  'app-deputado-card',
+  standalone:  true,
+  imports: [RouterLink],
+  templateUrl:  './deputado-card.component.html',
+  styleUrl:  './deputado-card.component.scss'
+})
+export  class  DeputadoCardComponent {
+  @Input({required:  true}) deputado!  :  Deputado;
+
+  @Output() eventChageSeguir  =  new  EventEmitter<Deputado>();
+
+  onChangeSeguir() :  void{
+    this.eventChageSeguir.emit(this.deputado);
+  }
+}
+```
+
+Depois, sobrescreva o arquivo **card.component.html** com o código abaixo:
+```html
+<div class="card deputado-card d-flex flex-row">
+  <div  class="image-container">
+    <img
+      [src]="deputado.urlFoto"
+      alt="Foto de {{  deputado.nome  }}"
+      class="deputado-photo"
+    />
+  </div>
+  <div  class="card-body">
+    <h5  class="card-title">{{  deputado.nome  }}</h5>
+    <p  class="card-text">{{  deputado.siglaPartido  }}</p>
+    <div  class="d-flex justify-content-between">
+      <button
+        class="btn"
+        [class.btn-primary]="!deputado.seguido"
+        [class.btn-danger]="deputado.seguido"
+        (click)="onChangeSeguir()"
+      >
+        {{  deputado.seguido  ?  'Deixar de Seguir'  :  'Seguir'  }}
+      </button>
+      <button  class="btn btn-outline-info"  [routerLink]="['/detalhes', deputado.id]">
+        Ver Detalhes
+      </button>
+    </div>
+  </div>
+</div>
+```
+
+Por fim, no arquivo **card.component.scss** iremos adicionar a estilização descrita abaixo:
+```scss
+.deputado-card {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  transition: transform  0.3s, box-shadow  0.3s;
+
+  &:hover {
+  transform: translateY(-5px);
+  box-shadow: 0  5px  15px  rgba(0, 0, 0, 0.1);
+  }
+
+  .image-container {
+  flex-shrink: 0;
+  margin-right: 15px;
+  width: 80px;
+  height: 80px;
+
+  .deputado-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  /* Deixa a foto circular */
+  border: 2px  solid  #ddd;
+  }
+  }
+
+  .card-body {
+  flex-grow: 1;
+
+  .btn {
+  font-size: 0.9rem;
+
+  &.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+
+  &:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+  }
+  }
+
+  &.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+
+  &:hover {
+  background-color: #bd2130;
+  border-color: #a71d2a;
+  }
+  }
+  }
+  }
+}
+```
+
+Com isso, finalizamos a construção da primeira parte do projeto.
