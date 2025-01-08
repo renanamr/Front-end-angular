@@ -357,4 +357,52 @@ Por fim, no arquivo **card.component.scss** iremos adicionar a estilização des
 }
 ```
 
-Com isso, finalizamos a construção da primeira parte do projeto.
+Com isso, finalizamos a construção da primeira parte do projeto. Caso tenha ficado em dúvida sobre alguma parte do código aconselho revisitar os projetos anteriores e/ou os slides das aulas anteriores, pois o foco do projeto é inserir os novos conceitos que serão debatidos nos próximos tópicos.
+
+#### Verificação parcial
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git  checkout  54c8e5d
+```
+
+## 1. RxJS
+
+O  **RxJS**  (Reactive Extensions for JavaScript) é uma biblioteca usada no Angular para trabalhar com  **fluxos de dados assíncronos** (Programação Reativa). Ele permite que você  **crie, combine e manipule dados**  que chegam ao longo do tempo. Pode se dizer que ele ajuda a "observar" eventos e  reagir  a eles, como se fosse um  **canal**  onde dados vão passando, e você pode fazer algo com eles a qualquer momento.
+
+Para o nosso projeto usaremos o RxJS para organizar as respostas de solicitações de dados feita a API. Neste tópico não iremos demonstrar a utilização via implementação de código, isso será demonstrado junto a implementação do HttpClient.
+
+Para que você possa entender melhor quando vermos códigos do RxJS, são descritas abaixo algumas funções que são comuns e usaremos em nosso projeto: 
+
+- `Observable`
+	-   É a  **base do RxJS**: um canal onde dados fluem;
+	-  Pode ser definido como tipo de uma variável ou retorno de uma função;
+	-  É usado para  **esperar respostas de APIs** e possibilitar o tratamento dos dados recuperados.
+
+- `.pipe`
+	-  É usado para **encadear operadores** (como `map`,  `catchError`, etc.) em um fluxo de dados do `Observable`;
+	-  É uma função presente no `Observable`, que organiza os operadores e facilita a leitura do código.
+
+- `catchError`
+	-  Usado dentro da função `.pipe` do `Observable`;
+	- Quando ocorre um erro, ele permite  **tratar**  ou  **substituir o erro**  por outro valor ou ação.
+	- Exemplo: Se a chamada de API falhar, você pode usar  `catchError`  para mostrar uma mensagem amigável ou retornar dados padrão.
+
+- `map`
+	-  Usado dentro da função `.pipe` do `Observable`;
+	-   Transforma os dados que estão passando no fluxo.
+	-   Exemplo: Recebe os dados da API no modelo **JSON** e transforma em um objeto do sistema.
+
+- `tap`
+	-  Usado dentro da função `.pipe` do `Observable`;
+	-  Executa uma ação  **sem alterar os dados**  do fluxo, e é chamado sempre que há uma alteração de dados do `Observable` .
+	-   Exemplo: Usado para  **debug**, como exibir no console o que está acontecendo.
+
+-  `throwError`
+	-   Cria um erro no fluxo, que será recuperado via `catchError`.	
+	-   Exemplo: Quando algo dá errado, você pode usar  `throwError`  para avisar o sistema.
+
+-  `of`
+	-   Cria um Observable que  **emite valores fixos**.
+	-   Exemplo: Usado para simular dados ou retornar um valor contido em uma variável sem necessitar a consulta a API.
+
+**Atenção:** Lembrem desses conceitos, pois serão úteis no desenvolvimento de soluções reais, bem como no entendimento do código descrito no próximo tópico.
