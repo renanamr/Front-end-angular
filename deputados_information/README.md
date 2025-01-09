@@ -413,7 +413,6 @@ O **HttpClient** é uma ferramenta essencial para fazer **requisições HTTP**. 
 A API que será utilizada por esse projeto pode ser utilizado por todos sem necessidade de cadastro. Os endpoints podem ser visto em sua documentação disponível no site: [https://dadosabertos.camara.leg.br/swagger/api.html](https://dadosabertos.camara.leg.br/swagger/api.html)
 
 ### 2.1 Configurando o HttpClient
-
 Para poder utilizar a biblioteca é necessário adicionar ao arquivo **app.config.ts** um *provider* chamado **provideHttpClient()**, como demonstrado abaixo:
 ```typescript
 export  const  appConfig:  ApplicationConfig  = {
