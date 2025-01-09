@@ -554,3 +554,180 @@ Note alguns detalhes importantes do código:
 **Observação:** O HttpClient não possui somente a função `get`, vocês poderiam utilizar qualquer uma das funções estabelecidas no padrão de APIs REST.
 
 **Observação 2:** Note que no código usamos as funções do RxJS como o `pipe` e outras para tratar as informações retornadas pelo `Observable` do http.
+
+Com isso o sistema já está conseguindo fazer as requisições que precisamos, mas ainda devemos mostrar esses dados nas telas.
+
+#### Verificação parcial
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git  checkout  9fb1296
+```
+
+### 2.3 Conectando o service aos componentes
+Agora iremos adicionar as funções do *DeputadoService* aos componentes. Primeiramente, sobrescreva o arquivo **deputados-list.component.ts** com o código abaixo:
+```typescript
+import { Component, OnInit } from  '@angular/core';
+import { Deputado } from  '../../models/deputado';
+import { DeputadoService } from  '../../services/deputado.service';
+import { DeputadoCardComponent } from  "./components/deputado-card/deputado-card.component";
+import { catchError, of } from  'rxjs';
+import { AlertErrorComponent } from  "../../components/alert-error/alert-error.component";
+import { LoadingComponent } from  "../../components/loading/loading.component";
+
+@Component({
+  selector:  'app-deputados-list',
+  standalone:  true,
+  imports: [DeputadoCardComponent, AlertErrorComponent, LoadingComponent],
+  templateUrl:  './deputados-list.component.html',
+  styleUrl:  './deputados-list.component.scss'
+})
+export  class  DeputadosListComponent  implements  OnInit {
+
+  hasError  :  boolean  =  false;
+  isLoading  :  boolean  =  true;
+  deputados  :  Deputado[] |  null  =  null;
+
+  constructor(private  deputadoService:  DeputadoService) {}
+
+  ngOnInit():  void {
+    this.deputadoService.getDeputados()
+    .pipe(
+      catchError((error) => {
+        this.hasError  =  true;
+        return  of(null);
+      }),
+    )
+    .subscribe((deputados) => {
+      this.deputados  =  deputados;
+      this.isLoading  =  false;
+    });
+  }
+
+  onChangeSeguir(deputado:  Deputado):  void {
+    this.deputadoService.onChangeSeguir(deputado);
+  }
+}
+```
+
+Após isso, iremos modificar o **deputados-list.component.html** para demonstrar os itens recuperados:
+```html
+<div  class="container deputado-list my-4">
+  @if(deputados  !=  null){
+    <div  class="row">
+      @for (deputado  of  deputados; track  $index) {
+        <div  class="col-md-6 col-lg-4 mb-4">
+          <app-deputado-card  [deputado]="deputado" (eventChageSeguir)="onChangeSeguir($event)">
+          </app-deputado-card>
+        </div>
+      }
+    </div>
+  }
+  
+  @if(hasError){
+    <app-alert-error  />
+  }
+  
+  @if (isLoading) {
+    <app-loading/>
+  }
+</div>
+```
+ 
+ Se você executar o projeto já conseguirá visualizar a lista de deputados. Note que no *component* estamos utilizando novamente o RxJS, justamente para poder demonstrar o fluxo de dados e os casos de erro. Utilizamos também algumas variáveis para armazenar esses dados e demonstrar o fluxo no html.
+
+Para concluir a implementação iremos sobrescrever o arquivo **deputado-details.component.ts** com o código abaixo:
+```typescript
+import { Component, OnInit } from  '@angular/core';
+import { ActivatedRoute, RouterLink } from  '@angular/router';
+import { DeputadoService } from  '../../services/deputado.service';
+import { Deputado } from  '../../models/deputado';
+import { AlertErrorComponent } from  "../../components/alert-error/alert-error.component";
+import { catchError, of } from  'rxjs';
+import { LoadingComponent } from  "../../components/loading/loading.component";
+  
+@Component({
+  selector:  'app-deputado-details',
+  standalone:  true,
+  imports: [RouterLink, AlertErrorComponent, LoadingComponent],
+  templateUrl:  './deputado-details.component.html'
+})
+export  class  DeputadoDetailsComponent  implements  OnInit {
+  hasError  :  boolean  =  false;
+  isLoading  :  boolean  =  true;
+  deputado!:  Deputado  |  undefined;
+  
+  constructor(
+    private  route:  ActivatedRoute,
+    private  deputadoService:  DeputadoService
+  ) {}
+  
+  ngOnInit():  void {
+    const  id  =  Number(this.route.snapshot.paramMap.get('id'));
+    this.deputadoService.getDeputadoById(id).pipe(
+      catchError((error) => {
+        this.hasError  =  true;
+        return  of(undefined);
+      }),
+    )
+    .subscribe((deputado) => {
+      this.deputado  =  deputado;
+      this.isLoading  =  false;
+    });
+  }
+
+  onChangeSeguir():  void {
+    if (this.deputado) {
+      this.deputadoService.onChangeSeguir(this.deputado);
+    }
+  }
+}
+```
+
+E também iremos adicionar o código do html ao arquivo **deputado-details.component.html**:
+```html
+<div  class="container">
+  <div  class="bg-primary text-white my-4 py-3 d-flex align-items-center justify-content-between">
+    <button  class="btn btn-light ms-3"  routerLink="/">
+      ← Voltar
+    </button>
+    <div  class="text-center flex-grow-1">
+      <h1  class="mb-0">Detalhes do deputado</h1>
+    </div>
+  </div>
+
+  @if(hasError){
+    <app-alert-error  />
+  }
+  
+  @if (isLoading) {
+    <app-loading  />
+  }
+  
+  @if(deputado){
+    <div  class="d-flex flex-column flex-md-row mb-3">
+      <!-- Imagem -->
+      <img  [src]="deputado.urlFoto"  alt="{{  deputado.nome  }}"  class="img-thumbnail me-3"  />
+
+      <!-- Dados -->
+      <div>
+        <h2  class="mb-1">{{  deputado.nome  }}</h2>
+        <p  class="mb-2">{{  "Partido: "  +  deputado.siglaPartido  }}</p>
+
+        <div  class="mt-3">
+          <h3>Mais informações</h3>
+          <p>Nome Civil: {{  deputado.details!.nomeCivil  }}</p>
+          <p>Data de Nascimento: {{  deputado.details!.dataNascimento  }}</p>
+          <p>Situação: {{  deputado.details!.situacao}}</p>
+          <p>Sigla UF: {{  deputado.details!.siglaUf}}</p>
+        </div>
+      </div>
+  
+      <!-- Botão de seguir -->
+      <button  class="btn mt-2 mt-md-0 ms-md-auto align-self-start"  [class.btn-primary]="!deputado.seguido"
+        [class.btn-danger]="deputado.seguido"  (click)="onChangeSeguir()">
+        {{  deputado.seguido  ?  'Deixar de Seguir'  :  'Seguir'  }}
+      </button>
+    </div>
+  }
+</div>
+```
