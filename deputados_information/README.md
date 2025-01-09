@@ -427,3 +427,130 @@ export  const  appConfig:  ApplicationConfig  = {
 Com isso será possível chamar o HttpClient via injeção de dependência em nossos componentes ou **services**.
 
 ### 2.2 Implementação de requisições
+O `HttpClient` deve ser usado no _Service_ para deixar o código mais organizado, fácil de entender e reaproveitável. Para isso, iremos criar uma pasta chamada **services** dentro do caminho **src/app** e dentro dela um arquivo **deputado.service.ts**.
+
+Sobrescreva o arquivo **deputado.service.ts** com o código abaixo:
+```typescript
+import { Injectable } from  '@angular/core';
+import { HttpClient, HttpHeaders } from  '@angular/common/http';
+import { Observable, throwError, of } from  'rxjs';
+import { Deputado } from  '../models/deputado';
+import { catchError, map, tap } from  'rxjs/operators';
+import { DeputadoDetails} from  '../models/deputado_details';
+
+@Injectable({
+  providedIn:  'root',
+})
+export  class  DeputadoService {
+  constructor(private  http:  HttpClient) {}
+
+  private  apiBaseUrl  =  'https://dadosabertos.camara.leg.br/api/v2';
+
+  private  deputados  :  Deputado[] |  null  =  null;
+
+
+  getDeputados() :  Observable<Deputado[]> {
+    if(this.deputados  ==  null){
+      return  this.fetchDeputados().pipe(
+        tap(data  => {this.deputados  =  data}),
+      );
+    }
+
+    return  of(this.deputados);
+  }
+
+  getDeputadoById(id:  number):  Observable<Deputado> {
+    let  deputado  =  this.deputados!.find((deputado) =>  deputado.id  ===  id);
+
+    // Se o deputado não foi encontrado, retorna um erro
+    if (!deputado) {
+      return  throwError(() =>  new  Error('Deputado não encontrado'));
+    }
+
+    // Se os detalhes já existem, retorna o deputado como um Observable
+    if (deputado.details) {
+      return  of(deputado);
+    }
+
+    return  this.getDeputadoDetalhes(id).pipe(
+      map((detalhes) => {
+        deputado.details  =  detalhes;
+        return  deputado;
+      })
+    );
+  }
+
+  // Muda o status do "Seguir" do deputado
+  onChangeSeguir(deputado:  Deputado):  void {
+    deputado.seguido  =  !deputado.seguido;
+
+    let  deputadoLocal  =  this.deputados!.find((other) =>  other.id  ===  deputado.id);
+    deputadoLocal!.seguido  =  deputado.seguido;
+  }
+
+
+  // USECASE: Requisição para buscar a lista de deputados
+  private  fetchDeputados():  Observable<Deputado[]> {
+    // Especifica o retorno JSON
+    const  headers  =  new  HttpHeaders({
+      Accept:  'application/json',
+    });
+    
+    return  this.http
+    .get<any>(
+      `${this.apiBaseUrl}/deputados`,
+      {
+        headers,
+        params: {
+          itens:  '12',
+          ordem:  'ASC',
+          ordenarPor:  'nome',
+        },
+      },
+    )
+    .pipe(
+      catchError((error) => {
+        return  of({ error:  true, message:  'Erro ao carregar a lista de deputados.' });
+      }),
+      map((response) =>  Deputado.fromList(response.dados),
+    ));
+  }
+
+  // USECASE: Requisição para buscar os detalhes de um deputado
+  private  getDeputadoDetalhes(id:  number):  Observable<DeputadoDetails> {
+    // Especifica o retorno JSON
+    const  headers  =  new  HttpHeaders({
+      Accept:  'application/json',
+    });
+
+    return  this.http.get<any>(`${this.apiBaseUrl}/deputados/${id}`, { headers }).pipe(
+      catchError((error) => {
+        return  of({ error:  true, message:  'Erro ao carregar os detalhes do deputado.' });
+      }),
+      map((response) =>  new  DeputadoDetails(response.dados)),
+    );
+  }
+}
+```
+Note alguns detalhes importantes do código:
+
+- Inicialização do `HttpClient`:
+	- Ela é feita via injeção de dependência pelo construtor do *Service*.
+
+- `.get()`
+	-   É utilizado para realizar requisições do tipo HTTP GET, que buscam dados de um servidor e recuperam as informações;
+	- A função pode receber alguns parâmetros como o `headers` e o `params` que serão descritos a seguir;
+	-   `<any>`: Indica o tipo de dados que será recuperado no GET, é possível criar uma *interface* para organizar os dados a serem recebidos;
+    -   `Observable`: É o tipo retornado pela função.
+
+- `headers`
+	-   São informações adicionais enviadas junto com a requisição HTTP. Normalmente usadas para passar informações como as credenciais do OAUTH ou tipo de retorno da API;
+	-   No código, os cabeçalhos especificam que o servidor deve retornar dados no formato JSON, já que a API da câmera pode enviar dados no formato JSON ou XML.
+
+- `params`
+	-   Permite passar parâmetros de consulta (query params) na URL de forma mais organizada;
+	-   No código usamos para conectar o endpoint solicitado aos parâmetros. Esses parâmetros são automaticamente concatenados na URL final como  `?itens=12&ordem=ASC&ordenarPor=nome`.
+
+**Observação:** O HttpClient não possui somente a função `get`, vocês poderiam utilizar qualquer uma das funções estabelecidas no padrão de APIs REST.
+
+**Observação 2:** Note que no código usamos as funções do RxJS como o `pipe` e outras para tratar as informações retornadas pelo `Observable` do http.
