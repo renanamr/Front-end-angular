@@ -406,3 +406,25 @@ Para que você possa entender melhor quando vermos códigos do RxJS, são descri
 	-   Exemplo: Usado para simular dados ou retornar um valor contido em uma variável sem necessitar a consulta a API.
 
 **Atenção:** Lembrem desses conceitos, pois serão úteis no desenvolvimento de soluções reais, bem como no entendimento do código descrito no próximo tópico.
+
+## 2. HttpClient
+O **HttpClient** é uma ferramenta essencial para fazer **requisições HTTP**. Ele permite que o sistema **se comunique com APIs** para enviar ou receber dados, sendo crucial para sistemas que precisam de informações externas. Em nosso caso, precisamos obter as informações dos deputados da API da câmera dos deputados do Brasil.
+
+A API que será utilizada por esse projeto pode ser utilizado por todos sem necessidade de cadastro. Os endpoints podem ser visto em sua documentação disponível no site: [https://dadosabertos.camara.leg.br/swagger/api.html](https://dadosabertos.camara.leg.br/swagger/api.html)
+
+### 2.1 Configurando o HttpClient
+
+Para poder utilizar a biblioteca é necessário adicionar ao arquivo **app.config.ts** um *provider* chamado **provideHttpClient()**, como demonstrado abaixo:
+```typescript
+export  const  appConfig:  ApplicationConfig  = {
+  providers: [
+    provideHttpClient(),
+    provideZoneChangeDetection({ eventCoalescing:  true }),
+    provideRouter(routes)
+  ]
+};
+```
+
+Com isso será possível chamar o HttpClient via injeção de dependência em nossos componentes ou **services**.
+
+### 2.2 Implementação de requisições
