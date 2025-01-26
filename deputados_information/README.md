@@ -731,3 +731,10 @@ E também iremos adicionar o código do html ao arquivo **deputado-details.compo
   }
 </div>
 ```
+
+#### Verificação parcial
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git  checkout  e8e3ef7
+```
+

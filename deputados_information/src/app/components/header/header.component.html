@@ -1,8 +1,15 @@
 <div class="bg-primary text-white">
   <div class="container d-flex align-items-center py-2">
-    <img src="https://www.camara.leg.br/midias/image/2022/03/marca-camara-preferencial-cores.png"
+    @defer{
+      <img src="https://www.camara.leg.br/midias/image/2022/03/marca-camara-preferencial-cores.png"
       alt="Logotipo Câmara dos Deputados" class="logo me-3" />
+    } @loading {
+      <p>Carregando...<p>
+    }@error {
+      <p>Câmera dos deputados</p>
+    }
   </div>
+
   <div class="bg-secondary">
     <div class="container d-flex align-items-center py-2">
       <span>Dados recuperados via API: dadosabertos.camara.leg.br</span>
