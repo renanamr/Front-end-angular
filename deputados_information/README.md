@@ -738,3 +738,43 @@ Para verificar se seu projeto está igual a este, você pode usar o comando **gi
 git  checkout  e8e3ef7
 ```
 
+## 3. Deferrable Views
+
+**Deferrable Views** é uma capacidade implementada a partir do Angular 17. Ele possibilita de uma forma simples que sejam definidos componentes para serem renderizados posteriormente, melhorando o desempenho da construção dos sistema. Além disso, possibilita criar um conjunto de variações para criar um processo mais fluido e transparente na construção de componentes, podendo inclusive informar um erro ocorrido que impossibilite sua construção. 
+
+Sua utilização é feita a partir de 4 diretivas:
++ `@defer`: Informa o elemento principal o qual terá sua renderização "retardada";
++ `@error`: Utilizado junto com o `@defer`. Possibilita definir um componente que será demonstrado caso ocorra erro ao renderizar o elemento principal.
++ `@loading`: Utilizado junto com o `@defer`. Possibilita definir um componente que será demonstrado enquanto o elemento principal está sendo renderizado.
++ `@placehold`: Utilizado junto com o `@defer`. Possibilita definir um componente que será demonstrado antes de iniciar a renderização do elemento principal.
+  
+Junto as diretivas podemos utilizar também alguns **Triggers**, mas no projeto não iremos abordar isso. Caso queira aprender mais sobre acesso o [Link](https://angular.dev/guide/templates/defer#controlling-deferred-content-loading-with-triggers).
+
+Em nosso projeto utilizaremos o *Deferrable Views* para auxiliar no processo de construção da logo da câmera dos deputado que se encontra no arquivo **header.component.html**. Para isso, sobrescreva o arquivo com o código abaixo:
+```html
+<div  class="bg-primary text-white">
+  <div  class="container d-flex align-items-center py-2">
+    @defer{
+      <img  src="https://www.camara.leg.br/midias/image/2022/03/marca-camara-preferencial-cores.png"
+        alt="Logotipo Câmara dos Deputados"  class="logo me-3"  />
+    } @loading {
+      <p>Carregando...<p>
+    }@error {
+      <p>Câmera dos deputados</p>
+    }
+  </div>
+
+  <div  class="bg-secondary">
+    <div  class="container d-flex align-items-center py-2">
+      <span>Dados recuperados via API: dadosabertos.camara.leg.br</span>
+    </div>
+  </div>
+</div>
+```
+
+
+#### Verificação parcial
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git  checkout  d86f568
+```
