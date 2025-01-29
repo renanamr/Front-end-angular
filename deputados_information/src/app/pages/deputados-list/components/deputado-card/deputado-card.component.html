@@ -1,9 +1,12 @@
   <div class="card deputado-card d-flex flex-row">
     <div class="image-container">
       <img
-        [src]="deputado.urlFoto"
+        ngSrc="{{ deputado.urlFoto }}"
         alt="Foto de {{ deputado.nome }}"
+        width="150"
+        height="150"
         class="deputado-photo"
+        loading="lazy"
       />
     </div>
     <div class="card-body">

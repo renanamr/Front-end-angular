@@ -1,13 +1,12 @@
 import { Component, EventEmitter, Input, Output} from '@angular/core';
 import { Deputado } from '../../../../models/deputado';
 import { RouterLink } from '@angular/router';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-deputado-card',
   standalone: true,
-  imports: [
-    RouterLink
-  ],
+  imports: [RouterLink, NgOptimizedImage],
   templateUrl: './deputado-card.component.html',
   styleUrl: './deputado-card.component.scss'
 })
