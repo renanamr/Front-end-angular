@@ -778,3 +778,64 @@ Para verificar se seu projeto está igual a este, você pode usar o comando **gi
 ```bash
 git  checkout  d86f568
 ```
+
+## 4. Otimização de imagens (NgOptimizedImage)
+
+Alguns sites usam e abusam de imagens, esse fato pode implicar em lentidão e travamentos ao utiliza-los. O `NgOptimizedImage` melhora a performance de carregamento ao otimizar imagens automaticamente, reduzindo o tempo de renderização e consumo de largura de banda. Ele ajuda a implementar práticas recomendadas, como `lazy loading` e dimensionamento correto, de forma nativa e sem esforço adicional.
+
+Em nosso projeto iremos utiliza-lo dentro dos cards de imagens dos deputados. Isso irá fazer que a construção do site seja mais fluída, baixando as imagens somente quando forem ser demonstradas na tela.
+
+Para utilizar o `NgOptimizedImage` é necessário importar no componente. Para isso, adicione os códigos abaixo no arquivo **deputado-card.component.ts**.
+```typescript
+import { NgOptimizedImage } from  '@angular/common';
+
+@Component({
+...
+  imports: [RouterLink, NgOptimizedImage],
+...
+})
+export  class  DeputadoCardComponent {
+```
+
+Após realizar a importação já é possível utilizar suas diretivas na página html. Iremos sobrescrever apenas o item `img` da imagem do deputado dentro do arquivo **deputado-card.component.html** com o código abaixo:
+```html
+<img
+  ngSrc="{{ deputado.urlFoto }}"
+  alt="Foto de {{ deputado.nome }}"
+  width="150"
+  height="150"
+  class="deputado-photo"
+  loading="lazy"
+/>
+```
+
+Com a adição do `NgOptimizedImage` nos é permitidos utilizar as seguintes diretivas:
++ `ngSrc`: Uso obrigatório
+	+  Define o caminho (URL) da imagem;
+	+   Substitui o atributo padrão  `src`  e é essencial para que o `NgOptimizedImage`  funcione.
++ `width` e `height`: Uso obrigatório
+	+ Especificam a largura e altura da imagem;
+	+   Garantem que o navegador reserve espaço para a imagem durante o carregamento, prevenindo  **layout shifting**.
++ `loading`: Controla o carregamento das imagens:
+	+   `"lazy"`: Carrega a imagem apenas quando ela entra no campo de visão (padrão);
+	+  `"eager"`: Carrega a imagem imediatamente.
+
+
+Além das utilizadas no projeto temos as opções:
++ **`priority`**:
+	+   Indica que a imagem deve ser carregada com alta prioridade, ignorando o  **lazy loading**.
+	+   Útil para imagens críticas, como logos ou banners iniciais.
+
++ **`decoding`**: Define como a imagem deve ser decodificada:
+    +   `"sync"`: Decodifica a imagem de forma síncrona.
+    +   `"async"`: Decodifica a imagem de forma assíncrona (padrão), melhorando a performance.
+
++ **`fill`**: Indica que a imagem deve preencher completamente seu contêiner pai, ajustando o tamanho automaticamente.
+
++ **`sizes`**: Especifica as dimensões da imagem para diferentes larguras de viewport, melhorando o comportamento responsivo.
+
+#### Verificação parcial
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git  checkout  986315e
+```
