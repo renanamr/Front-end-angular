@@ -5,11 +5,12 @@ import { Deputado } from '../../models/deputado';
 import { AlertErrorComponent } from "../../components/alert-error/alert-error.component";
 import { catchError, of } from 'rxjs';
 import { LoadingComponent } from "../../components/loading/loading.component";
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-deputado-details',
   standalone: true,
-  imports: [RouterLink, AlertErrorComponent, LoadingComponent],
+  imports: [RouterLink, AlertErrorComponent, LoadingComponent, DatePipe],
   templateUrl: './deputado-details.component.html'
 })
 export class DeputadoDetailsComponent implements OnInit {
