@@ -1,0 +1,21 @@
+<div class="container deputado-list my-4">
+
+    @if(deputados != null){
+    <div class="row">
+        @for (deputado of deputados; track $index) {
+        <div class="col-md-6 col-lg-4 mb-4">
+            <app-deputado-card [deputado]="deputado" (eventChageSeguir)="onChangeSeguir($event)">
+            </app-deputado-card>
+        </div>
+        }
+    </div>
+    }
+
+    @if(hasError){
+    <app-alert-error />
+    }
+
+    @if (isLoading) {
+    <app-loading />
+    }
+</div>

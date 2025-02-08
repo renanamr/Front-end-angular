@@ -1,0 +1,29 @@
+  <div class="card deputado-card d-flex flex-row">
+    <div class="image-container">
+      <img
+        ngSrc="{{ deputado.urlFoto }}"
+        alt="Foto de {{ deputado.nome }}"
+        width="150"
+        height="150"
+        class="deputado-photo"
+        loading="lazy"
+      />
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ deputado.nome }}</h5>
+      <p class="card-text">{{ deputado.siglaPartido }}</p>
+      <div class="d-flex justify-content-between">
+        <button
+          class="btn"
+          [class.btn-primary]="!deputado.seguido"
+          [class.btn-danger]="deputado.seguido"
+          (click)="onChangeSeguir()"
+        >
+          {{ deputado.seguido ? 'Deixar de Seguir' : 'Seguir' }}
+        </button>
+        <button class="btn btn-outline-info" [routerLink]="['/detalhes', deputado.id]">
+          Ver Detalhes
+        </button>
+      </div>
+    </div>
+  </div>
