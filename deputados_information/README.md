@@ -839,3 +839,48 @@ Para verificar se seu projeto está igual a este, você pode usar o comando **gi
 ```bash
 git  checkout  986315e
 ```
+
+## 5. Pipes
+
+No Angular, **pipes** são utilizados para transformar dados em templates de forma declarativa e são mais eficientes que transformações nos componentes. Desta forma, eles permitem modificar a exibição de valores sem alterar a lógica do componente.
+
+Para utilizar **Pipes** precisamos aplicar no template o operador `|`. Em nosso projeto iremos utilizar a diretiva para formatar as datas do nosso sistema.
+
+Antes de declarar o elemento em nosso template é necessário realizar a importarção do **DatePipe** no **deputado-details.component.ts**. Para isso realize a importação do elemento e o adicione ao componente como demonstrado abaixo:
+```typescript
+...
+import { DatePipe } from  '@angular/common';
+
+@Component({
+...
+  imports: [DatePipe,RouterLink, AlertErrorComponent, LoadingComponent],
+})
+export  class  DeputadoDetailsComponent  implements  OnInit {
+...
+```
+
+Após realizar a importação já é possível utilizar suas diretivas na página html. Iremos sobrescrever apenas o item `p`  que contem a data dentro do arquivo **deputado-details.component.html** com o código abaixo:
+```html
+<p>Data de Nascimento: {{  deputado.details!.dataNascimento  |  date:'dd/MM/yyyy' }}</p>
+```
+
+Com isso iremos formatar a data para que seja demonstrada no formato `dia/mês/ano`, exemplo: **12/10/2000**.
+
+Além do pipe de data temos vários outros tipos de formatação como:
++  `uppercase`: Converte texto para maiúsculas.
++   `lowercase`: Converte texto para minúsculas.
++   `titlecase`: Primeira letra de cada palavra em maiúscula.
++  `currency`: Formata valores monetários;
+	+ Exemplo: {{ valor | currency: 'BRL' }}.
++   `percent`: Formata número como porcentagem.
++   `json`: Converte objetos para formato JSON.
+
+Você pode usa-los individualmente ou em conjunto como no exemplo: `{{ nome | lowercase | titlecase }}`.
+
+#### Verificação final
+Para verificar se seu projeto está igual a este, você pode usar o comando **git** abaixo:
+```bash
+git  checkout  dd0380e
+```
+
+Com isso finalizamos nosso projeto. Não deixe de consultar a documentação oficial do Angular para aprender ainda mais sobre os assuntos abordados.
