@@ -1,0 +1,9 @@
+$primary: #0056b3; // Azul escuro para o fundo principal
+$secondary: #003a75; // Azul mais escuro para a barra inferior
+
+@import 'bootstrap/scss/bootstrap.scss';
+
+// Ajuste o tamanho da logo no header
+.logo {
+    height: 50px;
+}
